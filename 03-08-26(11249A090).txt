@@ -1,0 +1,124 @@
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Aug 3 11:33:37 2026
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: A090@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> create table student5(
+  2  regn0 number(5) primary key,
+  3  name char(20),
+  4  year number(2)
+  5  );
+
+Table created.
+
+SQL> create table dept(
+  2  deptno number(2) primary key,
+  3  deptname char(20)
+  4  );
+
+Table created.
+
+SQL> create table student6(
+  2  regno number(5) primary key,
+  3  name char(20),
+  4  deptno number(2) references dept(deptno)
+  5  );
+
+Table created.
+
+SQL> insert into dept values(1,'CSE');
+
+1 row created.
+
+SQL> insert into dept values(2,'ECE');
+
+1 row created.
+
+SQL> insert into student6 values(111,'sai',1);
+
+1 row created.
+
+SQL> insert into student6 values(222,'ram',2);
+
+1 row created.
+
+SQL> select * from student6;
+
+     REGNO NAME                     DEPTNO
+---------- -------------------- ----------
+       111 sai                           1
+       222 ram                          2
+
+SQL> select * from dept;
+
+    DEPTNO DEPTNAME
+---------- --------------------
+         1 CSE
+         2 ECE
+
+SQL> desc student5;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REGN0                                     NOT NULL NUMBER(5)
+ NAME                                               CHAR(20)
+ YEAR                                               NUMBER(2)
+
+SQL> insert into student5 values(0,'sai',1);
+
+1 row created.
+
+SQL> select * from student5;
+
+     REGN0 NAME                       YEAR
+---------- -------------------- ----------
+         0 sai                           1
+
+
+
+SQL> desc student6;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REGNO                                     NOT NULL NUMBER(5)
+ NAME                                               CHAR(20)
+ DEPTNO                                             NUMBER(2)
+
+SQL> create table student7
+  2  (
+  3  regno number(4) primary key,
+  4  email varchar2(30) unique,
+  5  deptno number(2) references dept(deptno),
+  6  age number(3) check (age>=18),
+  7  gender char default 'F',
+  8  name char(20)
+  9  );
+
+Table created.
+
+SQL> desc student7;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REGNO                                     NOT NULL NUMBER(4)
+ EMAIL                                              VARCHAR2(30)
+ DEPTNO                                             NUMBER(2)
+ AGE                                                NUMBER(3)
+ GENDER                                             CHAR(1)
+ NAME                                               CHAR(20)
+
+SQL> insert into student7 values(1111,'geetha@gamil.com',1,19,'' ,'GEETHA');
+
+1 row created.
+
+
+SQL> select * from student7;
+
+     REGNO EMAIL                              DEPTNO        AGE G
+---------- ------------------------------ ---------- ---------- -
+NAME
+--------------------
+      1111 geetha@gamil.com                          1         19 F
+GEETHA
