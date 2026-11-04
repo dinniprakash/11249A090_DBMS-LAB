@@ -1,0 +1,97 @@
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Aug 10 04:45:43 2026
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: A090@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+STUDENT9                       TABLE
+STUDENT8                       TABLE
+STUDENT5                       TABLE
+STUDENT2                       TABLE
+STUDENT11                      TABLE
+
+
+SQL> create table student4(
+  2  regno number(5),
+  3  name varchar2(20),
+  4  email varchar2(20),
+  5  age number(3),
+  6  gender char,
+  7  deptno number(2)
+  8  );
+
+Table created.
+
+SQL> alter table student4 add constraint stu_pk primary key(regno);
+
+Table altered.
+
+
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+STUDENT9                       TABLE
+STUDENT8                       TABLE
+STUDENT5                       TABLE
+STUDENT2                       TABLE
+STUDENT11                      TABLE
+STUDENT4                       TABLE
+
+6 rows selected.
+
+
+SQL> create table dept(
+  2  deptno number(2) primary key,
+  3  deptname varchar2(10),
+  4
+SQL> create table dept(
+  2  deptno number(2) primary key,
+  3  deptname varchar2(10)
+  4  );
+
+Table created.
+
+SQL> alter table student4 add constraint stu_fk foreign key(deptno) references dept(deptno);
+
+Table altered.
+
+SQL> alter table student4 add constraint stu_un unique(email);
+
+Table altered.
+
+
+SQL> alter table student4 add constraint stu_chk check(age>=18);
+
+Table altered.
+
+SQL> alter table student4 modify name default('F');
+
+Table altered.
+
+SQL> alter table student7 modify name constraint stu_ntnull not null;
+
+Table altered.
+
+SQL>  desc student4
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REGNO                                     NOT NULL NUMBER(5)
+ NAME                                      NOT NULL VARCHAR2(20)
+ EMAIL                                              VARCHAR2(20)
+ AGE                                                NUMBER(3)
+ GENDER                                             CHAR(1)
+ DEPTNO                                             NUMBER(2)
+
+
+SQL> alter table student4 modify gender default('F');
+
+Table altered.
