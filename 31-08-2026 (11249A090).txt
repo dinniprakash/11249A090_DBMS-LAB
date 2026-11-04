@@ -1,0 +1,143 @@
+SQL*Plus: Release 11.2.0.1.0 Production on Sun Sep 6 22:43:49 2026
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: A090@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+
+
+SQL> create table student95(
+  2  student_id int,
+  3  name varchar(20),
+  4  dept_id int
+  5  );
+
+Table created.
+
+SQL> create table department(
+  2  dept_id int,
+  3  dept_name varchar(20)
+  4  );
+
+Table created.
+
+
+SQL> insert into student95 values(1,'sai',10);
+
+1 row created.
+
+SQL> insert into student95 values(2,'geetha',20);
+
+1 row created.
+
+SQL> insert into department values(10,'cse');
+
+1 row created.
+
+SQL> select student95.name,department.dept_name
+  2  from student95
+  3  inner join department
+  4  on student95.dept_id=department.dept_id;
+
+NAME                 DEPT_NAME
+-------------------- --------------------
+sai                  cse
+
+SQL> create table student90(
+  2  name varchar(20)
+  3  );
+
+Table created.
+SQL> create table student89(
+  2  name varchar(20)
+  3  );
+
+Table created.
+
+SQL> insert into student90 values('minnu');
+
+1 row created.
+
+SQL> insert into student89 values('tinku');
+
+1 row created.
+
+SQL> select name from student90
+  2  union
+  3  select name from student89;
+
+NAME
+--------------------
+minnu
+tinku
+
+SQL> select name from student89;
+
+NAME
+--------------------
+tinku
+
+
+SQL> select name from student89
+  2  intersect
+  3  select name from student90;
+
+no rows selected
+
+SQL> select name from student90;
+
+NAME
+--------------------
+minnu
+
+
+SQL> select name from student90
+  2  intersect
+  3  select name from student89;
+
+no rows selected
+
+
+SQL> desc student95;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                         NUMBER(38)
+ NAME                                               VARCHAR2(20)
+ DEPT_ID                                            NUMBER(38)
+
+
+SQL> create view student95_view as
+  2  select student_id,name
+  3  from student95;
+
+View created.
+
+SQL> select * from student95_view;
+
+STUDENT_ID NAME
+---------- --------------------
+         1 sai
+         2 geetha
+
+
+SQL> select name
+  2  from student95_view
+  3  where student_id=1;
+
+NAME
+--------------------
+sai
+
+SQL> select name from student90
+  2  minus
+  3  select name from student89;
+
+NAME
+--------------------
+minnu
+
+SQL>
