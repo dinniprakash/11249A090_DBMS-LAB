@@ -1,0 +1,158 @@
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Oct 5 12:15:11 2026
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: A090@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> create or replace procedure get_student
+  2  (
+  3   p_id in number
+  4  )
+  5  is
+  6    v_name student.student_name%type;
+  7    v_marks student.marks%type;
+  8  begin
+  9    select student_name,marks
+ 10    into v_name,v_marks
+ 11    from student
+ 12    where student_id=p_id;
+ 13    dbms_output.put_line('student name:'||v_name);
+ 14    dbms_output.put_line('marks:'||v_marks);
+ 15  exception
+ 16    when no_data_found then
+ 17       dbms_output.put_line('student record not found.');
+ 18  end;
+ 19  /
+
+Procedure created.
+
+SQL> set serveroutput on;
+SQL> exec get_student(101);
+student name:ARUN
+marks:85
+
+PL/SQL procedure successfully completed.
+
+SQL> exec get_student(110);
+student name:SURESH2
+marks:90
+
+PL/SQL procedure successfully completed.
+
+SQL> create or replace function find_grade
+  2  (
+  3   p_marks number
+  4  )
+  5  return varchar2
+  6  is
+  7     v_grade varchar2(2);
+  8  begin
+  9       if p_marks>=90 then
+ 10          v_grade:='0';
+ 11       elsif p_marks>=80 then
+ 12          v_grade:='A+';
+ 13       elsif p_marks>=70 then
+ 14          v_grade:='A';
+ 15       elsif p_marks>=60 then
+ 16          v_grade:='B';
+ 17       else
+ 18          v_grade:='c';
+ 19       end if;
+ 20       return v_grade;
+ 21  end;
+ 22  /
+
+Function created.
+
+SQL> select * from student;
+
+STUDENT_ID STUDENT_NAME                   DEPARTMENT                MARKS
+---------- ------------------------------ -------------------- ----------
+       109 RAVI                           ECE                          81
+       110 SURESH2                        IT                           90
+       101 ARUN                           CSE                          85
+       102 BALA                           ECE                          78
+       103 DIVYA                          IT                           92
+       104 KAVI                           CSE                          88
+       105 RAVI                           ECE                          81
+       106 SURESH                         IT                           95
+
+8 rows selected.
+
+SQL> select find_grade(81) as grade from dual;
+
+GRADE
+--------------------------------------------------------------------------------
+A+
+
+
+SQL> select student_id,student_name,marks,
+  2      find_grade(marks) as grade
+  3  from student;
+
+STUDENT_ID STUDENT_NAME                        MARKS
+---------- ------------------------------ ----------
+GRADE
+--------------------------------------------------------------------------------
+       109 RAVI                                   81
+A+
+
+       110 SURESH2                                90
+0
+
+       101 ARUN                                   85
+A+
+
+
+STUDENT_ID STUDENT_NAME                        MARKS
+---------- ------------------------------ ----------
+GRADE
+--------------------------------------------------------------------------------
+       102 BALA                                   78
+A
+
+       103 DIVYA                                  92
+0
+
+       104 KAVI                                   88
+A+
+
+
+STUDENT_ID STUDENT_NAME                        MARKS
+---------- ------------------------------ ----------
+GRADE
+--------------------------------------------------------------------------------
+       105 RAVI                                   81
+A+
+
+       106 SURESH                                 95
+0
+
+
+8 rows selected.
+
+
+SQL> SELECT object_name, object_type
+  2  FROM user_objects
+  3  WHERE object_type = 'PROCEDURE';
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+GET_STUDENT
+PROCEDURE
+
+
+SQL> select object_name,object_type
+  2  from users_objects
+  3  where object_type='PROCEDURE';
+from users_objects
+     *
+ERROR at line 2:
+ORA-00942: table or view does not exist
+
